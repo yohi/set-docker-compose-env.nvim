@@ -1,6 +1,9 @@
 vim.notify = require("notify")
 
-local function export_docker_environment()
+local function set_docker_compose_env()
+
+    print('call set_docker_compose_env function')
+
     -- print('export docker environment')
     -- print(os.execute('docker compose config --format json | jq ".services.app.environment" > /dev/null'))
         local handle = io.popen('docker compose config --format json | jq ".services.app.environment" &> /dev/null')
@@ -18,6 +21,9 @@ local function export_docker_environment()
             end
         end
     -- end
-end
-pcall(export_docker_environment)
 
+end
+
+return {
+    setup = set_docker_compose_env
+}
