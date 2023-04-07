@@ -4,6 +4,7 @@ vim.opt.termguicolors = true
 local function set_docker_compose_env()
     -- print('export docker environment')
     -- print(os.execute('docker compose config --format json | jq ".services.app.environment" > /dev/null'))
+        local notify_list = {}
         local handle = io.popen('docker compose config --format json | jq ".services.app.environment" &> /dev/null')
         -- local handle = io.popen('docker compose config --format json | jq ".services.app.environment" > /dev/null')
         if handle ~= nil then
@@ -15,10 +16,12 @@ local function set_docker_compose_env()
                     -- print(key)
                     -- print(value)
                     vim.fn.setenv(key, value)
-                    vim.notify('export ' .. key .. '=' .. value, 'info')
+                    -- vim.notify('export ' .. key .. '=' .. value, 'info')
+                    table.insert(notify_list, 'export ' .. key .. '=' .. value)
                 end
             end
         end
+        vim.notify(table.concat(notify_list, "\n"), 'info')
     -- end
 end
 
